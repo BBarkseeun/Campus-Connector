@@ -7,34 +7,31 @@ using TMPro;
 using Firebase.Database;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
-
+using System.Linq;
+using Firebase.Extensions;
 
 public class LoginManager : MonoBehaviour
 {
-
     public TMP_InputField emailField;
     public TMP_InputField passField;
-
-    // AlertDialog 참조
     public AlertDialog alertDialog;
 
-    // 인증을 관리할 객체
-    Firebase.Auth.FirebaseAuth auth;
-
+    FirebaseAuth auth;
+    DatabaseReference reference;
     private Queue<System.Action> actionsToExecute = new Queue<System.Action>();
 
-    private void Update()
+    void Awake()
+    {
+        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
+    }
+
+    void Update()
     {
         while (actionsToExecute.Count > 0)
         {
             actionsToExecute.Dequeue().Invoke();
         }
-    }
-
-    void Awake()
-    {
-        // 객체 초기화
-        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
     }
 
     public void login()
@@ -44,10 +41,38 @@ public class LoginManager : MonoBehaviour
             {
                 if (task.IsCompleted && !task.IsFaulted && !task.IsCanceled)
                 {
-                    Debug.Log(emailField.text + " 로 로그인 하셨습니다.");
+                    FirebaseUser user = auth.CurrentUser;
+                    string userId = user.UserId;
 
-                    // 로그인 성공 시 씬 전환
-                    actionsToExecute.Enqueue(() => SceneManager.LoadScene("Main"));
+                    // 데이터베이스에서 닉네임 확인
+                    reference.Child("users").Child(userId).Child("nickname").GetValueAsync().ContinueWithOnMainThread(
+                        nicknameTask =>
+                        {
+                            if (nicknameTask.IsCompleted && !nicknameTask.IsFaulted && !nicknameTask.IsCanceled)
+                            {
+                                DataSnapshot snapshot = nicknameTask.Result;
+                                if (snapshot.Exists)
+                                {
+                                    // 닉네임이 이미 존재하면 메인 씬으로 이동
+                                    actionsToExecute.Enqueue(() => SceneManager.LoadScene("main"));
+                                }
+                                else
+                                {
+                                    // 닉네임이 없으면 닉네임 생성 씬으로 이동
+                                    actionsToExecute.Enqueue(() => SceneManager.LoadScene("name"));
+                                }
+                            }
+                            else
+                            {
+                                // 닉네임 확인에 실패하면 로그에 경고 메시지 출력
+                                Debug.LogWarning("닉네임 확인에 실패했습니다.");
+                                if (nicknameTask.IsFaulted)
+                                {
+                                    Debug.LogError(nicknameTask.Exception.ToString());
+                                }
+                            }
+                        }
+                    );
                 }
                 else
                 {
@@ -60,15 +85,13 @@ public class LoginManager : MonoBehaviour
 
     public void authentication()
     {
-
         Firebase.Auth.FirebaseUser user = auth.CurrentUser;
         if (user != null)
         {
             string name = user.DisplayName;
             string email = user.Email;
-            System.Uri photo_url = user.PhotoUrl; 
+            System.Uri photo_url = user.PhotoUrl;
             string uid = user.UserId;
         }
-
     }
 }

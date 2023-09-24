@@ -337,7 +337,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 377154537}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 598466310}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
+        m_MethodName: GoogleLogin
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &377154537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2661,8 +2673,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -46.8, y: 12.7}
-  m_SizeDelta: {x: 1188.8156, y: 693.8037}
+  m_AnchoredPosition: {x: -29, y: 25}
+  m_SizeDelta: {x: 1231.1644, y: 728.2119}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1443890552
 MonoBehaviour:
@@ -2737,7 +2749,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 446.88, y: -257.05}
+  m_AnchoredPosition: {x: 467.98, y: -294.7}
   m_SizeDelta: {x: 65.0696, y: 52.18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1512948374
@@ -3860,7 +3872,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -72, y: 157}
+  m_AnchoredPosition: {x: -55, y: 165}
   m_SizeDelta: {x: 202.0637, y: 49.0446}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2022898631
@@ -3883,7 +3895,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Campus Connector
+  m_text: CAMPUS CONNECTOR
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 94ed426ae844ddb44abfe69ce0410f38, type: 2}
   m_sharedMaterial: {fileID: -8702157282235481225, guid: 94ed426ae844ddb44abfe69ce0410f38, type: 2}
