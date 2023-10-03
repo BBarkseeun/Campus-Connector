@@ -46,14 +46,30 @@ public class SchoolNavigator : MonoBehaviour
 
     void ShowPath(NavMeshPath path)
     {
-        if (path.status != NavMeshPathStatus.PathInvalid)
+        if (path == null)
         {
-            lineRenderer.positionCount = path.corners.Length;
-            lineRenderer.SetPositions(path.corners);
+            Debug.LogError("NavMeshPath is null.");
+            return;
         }
-        else
+
+        if (lineRenderer == null)
         {
-            Debug.LogWarning("Invalid path!");
+            Debug.LogError("LineRenderer is not set.");
+            return;
+        }
+
+        if (path.corners.Length < 2) // 경로가 2개 미만의 포인트로 구성된 경우는 그리지 않습니다.
+            return;
+
+        lineRenderer.positionCount = path.corners.Length; // 선의 점의 수 설정
+
+        float heightOffset = 19f; // 이 값을 조정하여 높이를 변경할 수 있습니다.
+
+        for (int i = 0; i < path.corners.Length; i++)
+        {
+            Vector3 elevatedPosition = path.corners[i] + new Vector3(0, heightOffset, 0);
+            lineRenderer.SetPosition(i, elevatedPosition); // 선의 각 점의 위치 설정
         }
     }
 }
+
