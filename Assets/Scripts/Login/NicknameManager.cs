@@ -59,8 +59,8 @@ public class NicknameManager : MonoBehaviour
                             // 닉네임이 사용 가능하면 저장하고 다음 씬으로 이동
                             string userId = auth.CurrentUser.UserId;
                             Task setNicknameTask = reference.Child("users").Child(userId).Child("nickname").SetValueAsync(nickname);
-                            Task setNicknameIndexTask = reference.Child("nicknames").Child(nickname).SetValueAsync(userId);
-                            Task.WhenAll(setNicknameTask, setNicknameIndexTask).ContinueWith(
+                            //Task setNicknameIndexTask = reference.Child("nicknames").Child(nickname).SetValueAsync(userId);
+                            Task.WhenAll(setNicknameTask).ContinueWith(
                                 saveTask =>
                                 {
                                     if (saveTask.IsCompleted && !saveTask.IsFaulted && !saveTask.IsCanceled)

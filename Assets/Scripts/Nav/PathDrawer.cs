@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class PathDrawer : MonoBehaviour
 {
     private NavMeshAgent agent;
-    private LineRenderer lineRenderer;
+    public LineRenderer lineRenderer;
 
     void Start()
     {
@@ -15,7 +15,7 @@ public class PathDrawer : MonoBehaviour
             Debug.LogError("NavMeshAgent not found!");
             return;
         }
-
+        /*
         lineRenderer = GetComponent<LineRenderer>();
         if (lineRenderer == null)
         {
@@ -34,7 +34,7 @@ public class PathDrawer : MonoBehaviour
 
         lineRenderer.startWidth = 1.5f;
         lineRenderer.endWidth = 1.5f;
-
+        */
         
     }
     void Update()
