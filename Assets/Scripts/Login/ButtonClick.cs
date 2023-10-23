@@ -15,4 +15,8 @@ public class ButtonClick : MonoBehaviour
     {
         SceneManager.LoadScene("Register");
     }
+    public void back()
+    {
+        SceneManager.LoadScene("Login");
+    }
 }

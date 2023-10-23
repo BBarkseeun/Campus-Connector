@@ -78,8 +78,8 @@ public class ClassroomNavigation : MonoBehaviour
             if (NavMesh.CalculatePath(transform.position, destinationOnNavMesh, NavMesh.AllAreas, path))
             {
                 DrawPath(path);
-                Debug.Log("Found classroom object: " + classroomName);
-                Debug.Log("Starting position: " + transform.position);
+                Debug.Log("강의실위치: " + classroomName);
+                Debug.Log("시작위치: " + transform.position);
 
                 // 여기서 NavMeshAgent를 실제로 움직입니다.
                 agent.SetDestination(destinationOnNavMesh);
