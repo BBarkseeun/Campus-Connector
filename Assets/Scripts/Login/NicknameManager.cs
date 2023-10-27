@@ -53,7 +53,7 @@ public class NicknameManager : MonoBehaviour
         }
 
         // Check if the nickname contains any special characters using Regex
-        if (!System.Text.RegularExpressions.Regex.IsMatch(nickname, "^[a-zA-Z0-9]*$"))
+        if (!System.Text.RegularExpressions.Regex.IsMatch(nickname, "^[a-zA-Z0-9°¡-ÆR]*$"))
         {
             alertDialog.ShowAlert("´Ð³×ÀÓ¿¡´Â Æ¯¼ö¹®ÀÚ¸¦ »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.");
             return;
@@ -82,7 +82,7 @@ public class NicknameManager : MonoBehaviour
                                 {
                                     if (saveTask.IsCompleted && !saveTask.IsFaulted && !saveTask.IsCanceled)
                                     {
-                                        actionsToExecute.Enqueue(() => SceneManager.LoadScene("main"));
+                                        actionsToExecute.Enqueue(() => SceneManager.LoadScene("New Scene"));
                                     }
                                     else
                                     {

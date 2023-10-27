@@ -30,12 +30,13 @@ public class RigsterManager : MonoBehaviour
 
     public void RegisterAndSendVerificationEmail()
     {
+        /*
         if (!IsValidEmail(emailField.text))
         {
             alertDialog.ShowAlert("hallym.ac.kr 형식의 이메일 주소만 허용됩니다.");
             return;
         }
-
+        */
         if (!IsValidPassword(passField.text))
         {
             alertDialog.ShowAlert("비밀번호는 최소 6자 이상이며 특수문자를 포함해야 합니다.");
@@ -88,12 +89,12 @@ public class RigsterManager : MonoBehaviour
         auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
         reference = FirebaseDatabase.DefaultInstance.RootReference;
     }
-
+/*
     private bool IsValidEmail(string email)
     {
         return email.EndsWith("@hallym.ac.kr");
     }
-
+    */
     private bool IsPasswordMatching(string password, string confirmPassword)
     {
         return password == confirmPassword;
