@@ -16,7 +16,7 @@ MonoBehaviour:
     AppIdRealtime: 591b8aef-3d16-4a30-832e-530e2c531f1c
     AppIdFusion: 
     AppIdChat: 
-    AppIdVoice: 
+    AppIdVoice: f6023e18-36e6-4903-b89c-094da08d9977
     AppVersion: 
     UseNameServer: 1
     FixedRegion: 
@@ -28,22 +28,28 @@ MonoBehaviour:
     AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  DevRegion: kr
+  DevRegion: in
   PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - CantHearYou
+  - ChangeColour
   - ClickRpc
   - DestroyRpc
+  - HeresWhy
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
-  - SyncMovement
-  - SyncMovementAndPosition
   - RPC_Chat
-  - ReceiveMessage
-  - ReceiveMessageWithScroll
+  - SyncAnimationParams
+  - SyncJumpAnimation
+  - SyncMovement
+  - SyncRotation
+  - ShowPanelRPC
+  - CloseChatBox
+  - OpenChatBox
   DisableAutoOpenWizard: 1
-  ShowSettings: 0
+  ShowSettings: 1
   DevRegionSetOnce: 1

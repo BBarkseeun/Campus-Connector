@@ -1825,15 +1825,11 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Inbetween bone
-      rotation in copied configuration does not match rotation in animation file:\n\t'Character1_Spine'
-      : rotation error = 3.066746 deg\n"
+    rigImportErrors: "Copied Avatar Rig Configuration mis-match. Transform hierarchy
+      does not match:\n\tTransform 'Hips' for human bone 'Hips' not found\n"
+    rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
-      might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Character1_Spine' is inbetween humanoid
-      transforms and has rotation animation that will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
