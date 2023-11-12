@@ -11,9 +11,11 @@ using System.Text.RegularExpressions;
 
 public class NicknameManager : MonoBehaviour
 {
-    public TMP_InputField nicknameField;  // ´Ð³×ÀÓ ÀÔ·Â ÇÊµå
-    public Button submitButton;  // Á¦Ãâ ¹öÆ°
-
+    public TMP_InputField nicknameField; // ´Ð³×ÀÓ ÀÔ·Â ÇÊµå
+    public TMP_InputField studentIDField; // ÇÐ¹ø ÀÔ·Â ÇÊµå
+    public TMP_InputField majorField; // Àü°ø ÀÔ·Â ÇÊµå
+    public TMP_InputField nameField; // ÀÌ¸§ ÀÔ·Â ÇÊµå
+    public Button submitButton; // Á¦Ãâ ¹öÆ°
     // AlertDialog ÂüÁ¶
     public AlertDialog alertDialog;
 
@@ -29,7 +31,7 @@ public class NicknameManager : MonoBehaviour
         reference = FirebaseDatabase.DefaultInstance.RootReference;
 
         // ¹öÆ°ÀÇ Å¬¸¯ ÀÌº¥Æ® ¼³Á¤
-        submitButton.onClick.AddListener(SubmitNickname);
+        submitButton.onClick.AddListener(SubmitData);
     }
 
     void Update()
@@ -41,67 +43,102 @@ public class NicknameManager : MonoBehaviour
         }
     }
 
-    void SubmitNickname()
+    void SubmitData()
     {
         string nickname = nicknameField.text;
+        string studentID = studentIDField.text;
+        string major = majorField.text;
+        string name = nameField.text; // ÀÌ¸§ ÇÊµå¿¡¼­ ÅØ½ºÆ® °¡Á®¿À±â
 
-        // Check if the nickname is within the required length
+        // ´Ð³×ÀÓ, ÇÐ¹ø, Àü°ø, ÀÌ¸§ À¯È¿¼º °Ë»ç Ãß°¡
+        if (!ValidateNickname(nickname) || !ValidateStudentID(studentID) || !ValidateMajor(major) || !ValidateName(name))
+        {
+            return;
+        }
+
+        // Firebase¿¡ µ¥ÀÌÅÍ ÀúÀå
+        SaveDataToFirebase(nickname, studentID, major, name);
+    }
+    bool ValidateNickname(string nickname)
+    {
+        // ´Ð³×ÀÓÀº 12±ÛÀÚ ÀÌ³»·Î ÀÔ·ÂÇÏµµ·Ï ÇÏ¸ç Æ¯¼ö ¹®ÀÚ¸¦ »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.
         if (nickname.Length > 12)
         {
             alertDialog.ShowAlert("´Ð³×ÀÓÀº 12±ÛÀÚ ÀÌ³»·Î ÀÔ·ÂÇØÁÖ¼¼¿ä.");
-            return;
+            return false;
         }
-
-        // Check if the nickname contains any special characters using Regex
-        if (!System.Text.RegularExpressions.Regex.IsMatch(nickname, "^[a-zA-Z0-9°¡-ÆR]*$"))
+        if (!Regex.IsMatch(nickname, "^[a-zA-Z0-9°¡-ÆR]*$"))
         {
             alertDialog.ShowAlert("´Ð³×ÀÓ¿¡´Â Æ¯¼ö¹®ÀÚ¸¦ »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.");
-            return;
+            return false;
         }
+        return true;
+    }
 
-        if (!string.IsNullOrEmpty(nickname))
+    bool ValidateStudentID(string studentID)
+    {
+        // ÇÐ¹øÀº ¼ýÀÚ 8ÀÚ¸®·Î ÀÔ·Â¹Þ½À´Ï´Ù.
+        if (!Regex.IsMatch(studentID, @"^\d{8}$"))
         {
-            reference.Child("nicknames").Child(nickname).GetValueAsync().ContinueWith(
-                task =>
+            alertDialog.ShowAlert("ÇÐ¹øÀº ¼ýÀÚ 8ÀÚ¸®·Î ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+            return false;
+        }
+        return true;
+    }
+
+    bool ValidateMajor(string major)
+    {
+        // Àü°øÀº Æ¯¼ö¹®ÀÚ¸¦ Æ÷ÇÔÇÏÁö ¾Ê´Â ¹®ÀÚ¿­·Î Á¦ÇÑÇÕ´Ï´Ù.
+        if (!Regex.IsMatch(major, @"^[a-zA-Z°¡-ÆR\s]*$"))
+        {
+            alertDialog.ShowAlert("Àü°ø¿¡ Æ¯¼ö¹®ÀÚ¸¦ »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.");
+            return false;
+        }
+        return true;
+    }
+    bool ValidateName(string name)
+    {
+        // ÀÌ¸§ À¯È¿¼º °Ë»ç ·ÎÁ÷À» Ãß°¡ÇÕ´Ï´Ù.
+        // ¿¹¸¦ µé¾î, ÀÌ¸§Àº ºñ¾î ÀÖÁö ¾Ê¾Æ¾ß ÇÏ¸ç Æ¯¼ö ¹®ÀÚ¸¦ Æ÷ÇÔÇÏÁö ¾Ê´Â °ÍÀ¸·Î Á¦ÇÑÇÕ´Ï´Ù.
+        if (string.IsNullOrEmpty(name))
+        {
+            alertDialog.ShowAlert("ÀÌ¸§À» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+            return false;
+        }
+        if (!Regex.IsMatch(name, @"^[a-zA-Z°¡-ÆR\s]*$"))
+        {
+            alertDialog.ShowAlert("ÀÌ¸§¿¡ Æ¯¼ö¹®ÀÚ¸¦ »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.");
+            return false;
+        }
+        return true;
+    }
+
+    void SaveDataToFirebase(string nickname, string studentID, string major, string name)
+    {
+        if (int.TryParse(studentID, out int idNumber))
+        {
+            string userId = auth.CurrentUser.UserId;
+            // Firebase Database¿¡ ÀÌ¸§À» Æ÷ÇÔÇÏ¿© ´Ð³×ÀÓ, ÇÐ¹ø(Á¤¼öÇü), Àü°øÀ» ÀúÀåÇÕ´Ï´Ù.
+            Task setNicknameTask = reference.Child("users").Child(userId).Child("nickname").SetValueAsync(nickname);
+            Task setStudentIDTask = reference.Child("users").Child(userId).Child("studentID").SetValueAsync(idNumber);
+            Task setMajorTask = reference.Child("users").Child(userId).Child("major").SetValueAsync(major);
+            Task setNameTask = reference.Child("users").Child(userId).Child("name").SetValueAsync(name); // ÀÌ¸§ ÀúÀå
+
+            Task.WhenAll(setNicknameTask, setStudentIDTask, setMajorTask, setNameTask).ContinueWith(
+                saveTask =>
                 {
-                    if (task.IsCompleted && !task.IsFaulted && !task.IsCanceled)
+                    if (saveTask.IsCompleted && !saveTask.IsFaulted && !saveTask.IsCanceled)
                     {
-                        DataSnapshot snapshot = task.Result;
-                        if (snapshot.Exists)
-                        {
-                            Debug.LogError("´Ð³×ÀÓÀÌ ÀÌ¹Ì »ç¿ë ÁßÀÔ´Ï´Ù.");
-                            actionsToExecute.Enqueue(() => alertDialog.ShowAlert("ÀÌ¹Ì »ç¿ëÁßÀÎ ´Ð³×ÀÓÀÔ´Ï´Ù."));
-                        }
-                        else
-                        {
-                            string userId = auth.CurrentUser.UserId;
-                            Task setNicknameTask = reference.Child("users").Child(userId).Child("nickname").SetValueAsync(nickname);
-                            Task setNicknameIndexTask = reference.Child("nicknames").Child(nickname).SetValueAsync(userId);
-                            Task.WhenAll(setNicknameTask, setNicknameIndexTask).ContinueWith(
-                                saveTask =>
-                                {
-                                    if (saveTask.IsCompleted && !saveTask.IsFaulted && !saveTask.IsCanceled)
-                                    {
-                                        actionsToExecute.Enqueue(() => SceneManager.LoadScene("New Scene"));
-                                    }
-                                    else
-                                    {
-                                        alertDialog.ShowAlert("´Ð³×ÀÓ ÀúÀå¿¡ ½ÇÆÐÇß½À´Ï´Ù.");
-                                        if (saveTask.IsFaulted)
-                                        {
-                                            alertDialog.ShowAlert(saveTask.Exception.ToString());
-                                        }
-                                    }
-                                }
-                            );
-                        }
+                        actionsToExecute.Enqueue(() => SceneManager.LoadScene("SampleScene_1"));
                     }
                     else
                     {
-                        alertDialog.ShowAlert("´Ð³×ÀÓ È®ÀÎ¿¡ ½ÇÆÐÇß½À´Ï´Ù.");
-                        if (task.IsFaulted)
+                        Debug.LogError("µ¥ÀÌÅÍ ÀúÀå¿¡ ½ÇÆÐÇß½À´Ï´Ù.");
+                        actionsToExecute.Enqueue(() => alertDialog.ShowAlert("µ¥ÀÌÅÍ ÀúÀå¿¡ ½ÇÆÐÇß½À´Ï´Ù."));
+                        if (saveTask.IsFaulted)
                         {
-                            alertDialog.ShowAlert(task.Exception.ToString());
+                            Debug.LogError(saveTask.Exception.ToString());
+                            actionsToExecute.Enqueue(() => alertDialog.ShowAlert(saveTask.Exception.ToString()));
                         }
                     }
                 }
@@ -109,7 +146,7 @@ public class NicknameManager : MonoBehaviour
         }
         else
         {
-            alertDialog.ShowAlert("´Ð³×ÀÓÀ» ÀÔ·ÂÇÏ¼¼¿ä.");
+            alertDialog.ShowAlert("ÇÐ¹øÀº ¼ýÀÚ·Î¸¸ ±¸¼ºµÇ¾î¾ß ÇÕ´Ï´Ù.");
         }
     }
 }

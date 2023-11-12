@@ -64,7 +64,7 @@ public class LoginManager : MonoBehaviour
                                 if (snapshot.Exists)
                                 {
                                 // 닉네임이 이미 존재하면 메인 씬으로 이동
-                                actionsToExecute.Enqueue(() => SceneManager.LoadScene("main"));
+                                actionsToExecute.Enqueue(() => SceneManager.LoadScene("SampleScene_1"));
                                 }
                                 else
                                 {

@@ -11,7 +11,7 @@ public class ChangeScene : MonoBehaviour
         switch (this.gameObject.name)
         {
             case "StartBtn":
-                SceneManager.LoadScene("SampleScene");
+                SceneManager.LoadScene("Login");
                 break;
             case "HomeBtn":
                 SceneManager.LoadScene("MainMenu");
