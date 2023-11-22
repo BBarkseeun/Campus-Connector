@@ -44,6 +44,11 @@ MonoBehaviour:
   - RPC_Chat
   - ReceiveMessage
   - ReceiveMessageWithScroll
+  - SyncAnimationParams
+  - SyncJumpAnimation
+  - SyncRotation
+  - CloseChatBox
+  - OpenChatBox
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

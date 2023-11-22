@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 4b6c20d18dd5b424cb53b0d36a349616
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Comica BD
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: a2ac7565ad905d84e88d03c7aef2838c, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
